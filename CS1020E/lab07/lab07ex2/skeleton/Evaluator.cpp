@@ -44,22 +44,19 @@ int evaluate (queue<Token> sizeOfThree){// the input for this is a queue of size
 //calculate is defined after evaluate because calculate calls evaluate
 int calculate(queue<Token> input, queue<Token> evalQueue, queue<Token> tempQueue, queue<Token> empty){
 
-    int output = 0;
-
     if(input.size() == 0){//when everything is pushed onto the other queue
-        output = evaluate(evalQueue);// evalqueue will always be the queue to be evaluated
-        return  output;
+        return  evaluate(evalQueue);// evalqueue will always be the queue to be evaluated
     }else 
-    if(input.front().isLeftParenthesis()){
+    if(input.front().isLeftParenthesis()){// if left parenthesis, dont care about it
         input.pop();
     }else
-    if(input.front().isRightParenthesis()){
+    if(input.front().isRightParenthesis()){// when right parenthesis starts doing calculation
 
         tempQueue = empty;//most efficient way of clearing a queue
         while(evalQueue.size() > 3){
             tempQueue.push(evalQueue.front());
-            evalQueue.pop();
 
+            evalQueue.pop();
         }
         Token curToken(to_string(evaluate(evalQueue)));
         tempQueue.push(curToken);//tempQueue is sort of like a temporary queue to store evalqueue when its being evaluated
@@ -71,7 +68,8 @@ int calculate(queue<Token> input, queue<Token> evalQueue, queue<Token> tempQueue
         evalQueue.push(input.front());
         input.pop();
     }
-    return  output + calculate(input,evalQueue,tempQueue,empty);// this function return 0+0+0+0+final value
+    
+    return calculate(input,evalQueue,tempQueue,empty);// this function keeps returning itself until input queue is empty
 }
 
 
